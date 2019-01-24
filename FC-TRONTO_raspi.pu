@@ -1,0 +1,21 @@
+@startuml FC-TRONTO_raspi
+
+artifact main.py
+artifact serialCom.py
+artifact imageProc.py
+artifact motorContl.py
+database "multiprocessing.Value" {
+  folder "shmem" {
+    card irAngle
+    card uSonicDis
+  }
+}
+
+main.py --> serialCom.py : 起動
+main.py --> motorContl.py : 起動
+motorContl.py ..> imageProc.py : include
+main.py --> shmem : 作成・初期化
+serialCom.py --> shmem : 書き込み
+motorContl.py --> shmem : 読み込み
+
+@enduml
